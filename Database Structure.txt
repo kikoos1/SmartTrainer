@@ -1,0 +1,54 @@
+Database structure for the app
+**********************************
+Users Table
+0.ID
+1.Name
+2.Email
+3.Password
+4.Calories
+5.Protein
+6.Carbs
+7.Fat
+**********************************
+Meals table
+0.ID
+1.User_id
+2.Food_id
+3.Date
+4.Calories
+5.Protein
+6.Carbs
+7.Fat
+8.Type
+**********************************
+Excercise Table
+0.ID
+1.Name
+**********************************
+KG Progress
+0.ID
+1.User ID
+2.Kilos
+3.Date
+**********************************
+Excercise progress
+0.ID
+1.User ID
+2.Workout ID
+3.Date
+**********************************
+Workouts Table
+1.ID
+2.User_id
+3.Excercise_id
+4.Sets
+5.Reps
+6.Kilos
+**********************************
+
+Friends Table
+1.ID
+2.User_id
+3.Friend_id
+**********************************
+
