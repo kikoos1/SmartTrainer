@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterFormRequest;
 use Illuminate\Http\Request;
 use JWTAuth;
+use Illuminate\Support\Facades\Mail;
+use App\User;
+use Auth;
 
 class AuthController extends Controller
 {
     //
+     function sendMail($code,$mail){
+        Mail::send('mail', ['code'=>$code], function ($m) use ($mail) {
+            $m->from('waikovixstudio@gmail.com', 'SmartTrainer');
+            $m->to($mail)
+                ->subject('Verify your email address');
+        });
+    }
     public function Register(RegisterFormRequest $request){
         $user = new User;
+        $confirmCode = str_random(30);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
@@ -18,7 +29,10 @@ class AuthController extends Controller
         $user->protein = $request->protein;
         $user->carbs = $request->carbs;
         $user->fat = $request->fat;
+        $user->code = $confirmCode;
+        $this->sendMail($confirmCode,$request->email);
         $user->save();
+        
         return response()->json([
             'status'=>'succ'
         ]);
@@ -51,5 +65,12 @@ class AuthController extends Controller
         return response([
             'status' => 'success'
         ]);
+    }
+    
+    public function confirmCode($code){
+        $user = User::where('code',$code)->first();
+        $user->isconfirm = 1;
+        $user->save();
+        return view('complete');
     }
 }

@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->integer('protein');
             $table->integer('carbs');
             $table->integer('fat');
+            $table->string('code');
+            $table->boolean('isconfirm')->default('0');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -27,7 +27,7 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat class = 'blue--text'>
+                        <v-btn flat class = 'blue--text' to = '/workout'>
                            Learn More
                         </v-btn>
                     </v-card-actions>

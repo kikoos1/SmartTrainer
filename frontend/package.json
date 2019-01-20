@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "SmartTrainer",
   "version": "1.0.0",
-  "description": "Smart Trainer Fronend",
+  "description": "Smart Trainer Frontend",
   "author": "WS",
   "private": true,
   "scripts": {
@@ -13,17 +13,18 @@
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
     "hchs-vue-charts": "^1.2.8",
+    "moment": "^2.23.0",
     "vee-validate": "^2.1.0-beta.7",
-    "vue": "^2.5.2",
-    "vue-chartjs": "^3.3.2",
+    "vue": "^2.5.17",
+    "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.1.1",
+    "vuetify": "^1.1.11",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-2": "^6.24.1",
@@ -52,12 +53,12 @@
     "vue-charts": "^0.2.1",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.3",
-    "vue-template-compiler": "^2.5.2",
+    "vue-template-compiler": "^2.5.17",
     "webpack": "^3.7.1",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-middleware": "^1.12.0",
-    "webpack-hot-middleware": "^2.19.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-hot-middleware": "^2.22.3",
+    "webpack-merge": "^4.1.4"
   },
   "engines": {
     "node": ">= 4.0.0",

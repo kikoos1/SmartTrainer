@@ -14,22 +14,37 @@ import Settings from './components/Settings'
 import MealNotifications from './components/MealNotifications'
 import VueCharts from 'vue-chartjs'
 import Vuex from 'vuex'
+export {moment} from 'moment'
+
 Vue.use(Vuex)
+
 const store = new Vuex.Store({
   state: {
-    token: ''
+    token: localStorage.getItem('token'),
+    user:[]
   },
   mutations: {
-    get (state) {
-      return state.token
-    },
     set(state,newtoken){
       state.token = newtoken
+    },
+    setUser(state,newuser){
+      state.user = newuser
+    }
+  },
+  getters:{
+    get: state => {
+      return state.token;
+    },
+    getUser: state => {
+      return state.user;
     }
   }
 })
-axios.defaults.baseURL = 'hhtp://localhost:8000/api'
-axios.defaults.headers= {'X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+$store.state.token.get};
+var token = localStorage.getItem('token');
+Vue.prototype.$store = store;
+axios.defaults.baseURL = 'http://192.168.0.111:8000/api'
+axios.defaults.headers= {'X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+ token,'Content-Type':'application/json'};
+
 
 Vue.use(VueCharts);
 Vue.component('meal-notifications',MealNotifications);

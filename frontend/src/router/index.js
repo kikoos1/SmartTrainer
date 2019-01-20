@@ -16,6 +16,9 @@ import SettingsTheme from '@/components/SettingsTheme'
 import About from '@/components/About'
 import Friends from '@/components/Friends'
 import KgProgress from '@/components/KgProgress'
+import AddMeal from '@/components/AddMeal'
+import Workout from '@/components/Workout'
+import Exercise from "../components/Exercise";
 
 Vue.use(Router)
 
@@ -101,6 +104,36 @@ export default new Router({
           path: '/kg-progress',
           name: 'KgProgress',
           component: KgProgress
+      },
+      {
+          path:'/daily-intake/addFood/',
+          name:'AddMeal',
+          component:AddMeal,
+      },
+      {
+          path:'/daily-intake/addmeal/:id',
+          name:'AddMeal',
+          component:AddMeal,
+          props:true
+      },
+
+      {
+          path:'/workout/',
+          name:'Workout',
+          component:Workout,
+          //props:true
+      },
+      {
+          path:'/exercises/add',
+          name:'exercise',
+          component:Exercise,
+          //props:true
+      },
+      {
+          path:'/exercises/edit',
+          name:'exercise',
+          component:Exercise,
+          props:true
       },
 
   ]

@@ -2,18 +2,20 @@
     <div>
     <v-container >
         <h1>Login</h1>
-    <form @submit.prevent = ''>
+    <form @submit.prevent = 'Login'>
         <v-text-field
             type = 'email'
             label = 'Email'
+            v-model = 'email'
             required
         ></v-text-field>
         <v-text-field
             type = 'password'
             label = 'Password'
+            v-model = 'password'
             required
         ></v-text-field>
-        <v-btn>Login</v-btn>
+        <v-btn type = 'submit'>Login</v-btn>
     </form>
     </v-container>
     <v-container>
@@ -33,7 +35,32 @@
 
 <script>
     export default {
-        name: "Login"
+        name: "Login",
+        data:()=>({
+            email:'',
+            password:''
+        }),
+        methods:{
+             
+            Login(){
+                var app = this;
+                this.post('/auth/login',{
+                    email:this.email,
+                    password:this.password
+                }).then(function(resp){
+                   // app.$store.commit('set',resp.token);
+                    localStorage.setItem('token',resp.token);
+
+                      app.$eventBus.$emit('logged');
+                })
+            }
+        },
+        created() {
+            var app = this;
+            this.get('/auth/user').then(function(resp){
+               app.$eventBus.$emit('logged');
+            })
+        }
     }
 </script>
 

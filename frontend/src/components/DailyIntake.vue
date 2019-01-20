@@ -15,7 +15,7 @@
             <v-icon>add</v-icon>
         </v-btn>
         <add-food-modal :dialog ='show' ></add-food-modal>
-
+        <calorie-widget></calorie-widget>
 <v-flex>
         <v-card>
             <v-container fluid
@@ -39,7 +39,7 @@
 
 
                                 <v-list-tile-content>
-                                    <v-list-tile-title>{{ breakfast.food.name }}</v-list-tile-title>
+                                    <v-list-tile-title>{{ item.food.name}}</v-list-tile-title>
                                 </v-list-tile-content>
 
                                 <v-list-tile-action>
@@ -48,7 +48,7 @@
                                     </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                    <v-btn icon ripple>
+                                    <v-btn icon ripple @click = 'Delete(id,item.type)'>
                                         <v-icon>delete</v-icon>
                                     </v-btn>
                                 </v-list-tile-action>
@@ -84,7 +84,7 @@
 
 
                                     <v-list-tile-content>
-                                        <v-list-tile-title>{{lunch.food.name}}</v-list-tile-title>
+                                        <v-list-tile-title>{{item.food.name}}</v-list-tile-title>
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
@@ -93,7 +93,7 @@
                                         </v-btn>
                                     </v-list-tile-action>
                                     <v-list-tile-action>
-                                        <v-btn icon ripple>
+                                        <v-btn icon ripple @click = 'Delete(id,item.type)'>
                                             <v-icon>delete</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
@@ -123,12 +123,12 @@
                         <v-card-text>
                             <v-list>
                                 <v-list-tile
-                                    v-for = '(index,id) in dinner' :key = 'id'
+                                    v-for = '(item,id) in dinner' :key = 'id'
                                 >
 
 
                                     <v-list-tile-content>
-                                        <v-list-tile-title>{{ dinner.food.name }}</v-list-tile-title>
+                                        <v-list-tile-title>{{ item.food.name }}</v-list-tile-title>
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
@@ -137,7 +137,7 @@
                                         </v-btn>
                                     </v-list-tile-action>
                                     <v-list-tile-action>
-                                        <v-btn icon ripple>
+                                        <v-btn icon ripple @click = 'Delete(id,item.type)'>
                                             <v-icon>delete</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
@@ -166,25 +166,53 @@
             breakfast:[],
             dinner:[],
             lunch:[],
-            dialog:false
+            dialog:false,
+            intake:[]
         }),
         components:{
             Nutrition
         },
         methods:{
             fetchData(){
-                this.get('api/').then(function(resp){
-
+                var app =this;
+                this.get('/daily-intake').then(function(resp){
+                    console.log(resp)
+                    app.intake = resp;
+                    app.Daily_Intake(resp.meals);
                 }).catch(function (error) {
                     console.log(error);
                 })
+                console.log(app.intake);
+
+            },
+            Daily_Intake(foods){
+                var app = this;
+                console.log(foods);
+                foods.forEach((food)=>{
+                    console.log("Food:" +food);
+                    console.log(food);
+                    if(food.type == "Breakfast"){
+                        app.breakfast.unshift(food);
+                    }else if(food.type =='Lunch'){
+                        app.lunch.unshift(food)
+                    }else if(food.type =='Dinner'){
+                        app.dinner.unshift(food);
+                    }
+                })
+            },
+            Delete(index,type){
+
             }
         },
         created(){
             this.fetchData();
+            //this.Daily_Intake(this.intake);
             var app = this;
             this.$eventBus.$on('close-food-modal',function () {
                 app.show = false;
+            })
+            this.$eventBus.$on('close-modal',function(){
+                app.dialog = false;
             })
         }
     }

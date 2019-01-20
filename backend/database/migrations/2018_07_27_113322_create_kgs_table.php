@@ -15,6 +15,8 @@ class CreateKgsTable extends Migration
     {
         Schema::create('kgs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
+            $table->float('kg');
             $table->timestamps();
         });
     }

@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Create new workout</span>
+                    <span class="headline">Add weight</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
@@ -26,16 +26,16 @@
                                 >
                                     <v-text-field
                                             slot="activator"
-                                            v-model="workout.date"
+                                            v-model="kg.date"
                                             label="Date"
                                             hint="MM/DD/YYYY format"
                                             persistent-hint
                                             prepend-icon="event"
-                                            @blur="workout.date = parseDate(workout.date)"
+                                            @blur="kg.date = parseDate(kg.date)"
                                             requred
 
                                     ></v-text-field>
-                                    <v-date-picker v-model="workout.date" no-title @input="menu1 = false"></v-date-picker>
+                                    <v-date-picker v-model="kg.date" no-title @input="menu1 = false"></v-date-picker>
                                 </v-menu>
                             </v-flex>
 
@@ -59,8 +59,7 @@
         data:()=>({
             dateFormatted: null,
             kg:{
-
-                kg:'',
+                kg:0,
                 date:this.dateFormatted
             },
             menu1:false,
@@ -71,15 +70,9 @@
                 this.$eventBus.$emit('close-modal')
             },
             Save(){
-                var kilos = {
-                    kg:this.kg.kg,
-                    date:this.workout.date
 
-                }
-                this.$eventBus.$emit('save',newworkout);
-                this.workout.name = null;
-                this.workout.date = null    ;
-
+                this.$eventBus.$emit('save',this.kg);
+                this.kg = []
             },
             formatDate (date) {
                 if (!date) return null
@@ -92,6 +85,9 @@
 
                 const [month, day, year] = date.split('/')
                 return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+            },
+            getRandomInt () {
+                return Math.floor(Math.random() * (50 - 5 + 1)) + 5
             }
         },
         computed: {

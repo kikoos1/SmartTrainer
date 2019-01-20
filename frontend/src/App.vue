@@ -3,6 +3,7 @@
           id="inspire"
           :dark = "dark"
   >
+
     <v-navigation-drawer
             v-model="drawer"
             fixed
@@ -47,10 +48,17 @@
       </v-toolbar-title>
     </v-toolbar>
     <v-content>
+      <v-alert v-show="isconfirm"
+               :value="true"
+               type="error"
+      >
+        Email is not confirmed!
+      </v-alert>
       <v-container justify-center align-center>
       <router-view></router-view>
       </v-container>
       <settings :dialog="dialog"></settings>
+
     </v-content>
   </v-app>
 </template>
@@ -60,14 +68,16 @@
         data: () => ({
             drawer: false,
             dialog:false,
-            logged:true,
+            logged:false,
             dark:false,
+            isconfirm:false,
             items: [
                 { icon: 'home', text: 'Dashboard',to:'/dashboard' },
                 { icon: 'restaurant_menu', text: 'Daily intake',to:'/daily-intake' },
-                { icon: 'trending_up', text: 'Gym Progress' ,to:'/progress'},
+                { icon: 'trending_up', text: 'Progress' ,to:'/kg-progress'},
+              { icon: 'fitness_center', text: 'Training',to:'/progress' },
                 { icon: 'people', text: 'Friends', to:'/friends' },
-                { icon: 'trending_up', text: 'Blog',to:'/blog' },
+                { icon: 'ballot', text: 'Blog',to:'/blog' },
                 { icon: 'grade', text: 'Achievments',to:'/achievements' },
                 //{ icon: 'settings', text: 'Settings',to:'settings' },
                 //{ icon: 'info', text: 'About' },
@@ -76,19 +86,80 @@
         props: {
             source: String
         },
-        created(){
+        //Methods
+        methods:{
+            //Checking auth
+          isAuth(){
             var app = this;
+
+            //app.$eventBus.$emit('timer-start');
+            var x = setInterval(function(){
+            app.get('/auth/user').then(function(){
+              app.logged = true;
+              //app.$router.push('/dashboard');
+
+            }).catch(function(resp){
+              app.$eventBus.$emit('logout')
+                //localStorage.setItem('token','')
+             clearInterval(x);
+            })
+            },5000)
+          },
+            //Fetching the user
+          fetchUser(){
+            var app = this;
+            this.get('/auth/user').then(function(resp){
+              app.$store.commit('setUser',resp.data);
+              if(!resp.data.isconfirm){
+                app.isconfirm = true
+              }
+            })
+          },
+            //Changing theme
+          SetDark(dark_theme = ''){
+            if(dark_theme != ''){
+              this.dark = dark_theme;
+            }
             if(localStorage.getItem('dark-theme') == 'true'){
                 this.dark = true;
+            }else{
+                this.dark = false;
             }
+          }
+        },
+        //Created function
+        created(){
+          var app = this;
+          this.isAuth();
+          //Checking if the user is logged and fetch the user
+          //app.isAuth();
+            this.fetchUser();
+          this.$eventBus.$on('logged',function(){
+              app.isAuth();
+            app.$router.push('/dashboard');
+        })
+        //Logout events
+      this.$eventBus.$on('logout',function(){
+        app.logged = false;
+        alert('Token expired please login');
+        app.$router.push('/');
+        
+      })
+      window.addEventListener('beforeunload',function(){
+          //localStorage.setItem('token',app.$store.getters.get);
+      })
+            //Theme
+            this.SetDark();
             this.$eventBus.$on('change-theme',function (resp) {
-                app.dark = resp;
+                app.SetDark(resp);
+                console.log(resp);
+
             }),
-            setInterval(function(){
-              app.post('/api/login')
-            },1000);
+
+          //Settings
           this.$eventBus.$on('close-modal',function () {
               app.dialog = false
+              //Notification
               setInterval(function(){
                   var now = new Date();
                  var date = now.getHours() + ":"+now.getMinutes();
@@ -102,6 +173,7 @@
               },1000*30)
           })
         }
+        
     }
 </script>
 

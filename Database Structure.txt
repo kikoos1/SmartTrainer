@@ -15,10 +15,7 @@ Meals table
 1.User_id
 2.Food_id
 3.Date
-4.Calories
-5.Protein
-6.Carbs
-7.Fat
+4.Amount
 8.Type
 **********************************
 Excercise Table

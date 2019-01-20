@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+  
 let mix = {
         methods: {
             ajaxCall(method, url, params = '') {

@@ -26,6 +26,7 @@
                                    required
                                    label = "Name"
                                    :rules = 'nameRules'
+                                   v-model = 'name'
 
                            ></v-text-field>
                            <v-text-field
@@ -33,12 +34,14 @@
                                    required
                                    label = "Email"
                                     :rules = 'emailRules'
+                                    v-model = 'email'
                            ></v-text-field>
                            <v-text-field
                                    type = 'password'
                                    required
                                    label = "Password"
                                   :rules = 'passwordRules'
+                                  v-model = 'password'
                            ></v-text-field>
                        </v-container>
                         <v-btn
@@ -203,8 +206,19 @@
         }),
         methods:{
             Register(){
+                var app = this;
                 if (this.$refs.form.validate()) {
-                    console.log('Everything is valid');
+                   this.post('/auth/register',{
+                       email:app.email,
+                       name:app.name,
+                       password:app.password,
+                       calories:app.calories,
+                       protein:app.protein,
+                       carbs:app.carbs,
+                       fat:app.fat
+                   }).then(function(){
+                        app.$router.push('/');
+                   })
                 }
             }
         },
@@ -221,7 +235,8 @@
             },
             Carbs(){
                 this.carbs = (this.calories-((this.protein*4)+(this.fat*9)));
-                return Math.floor(this.carbs/4)
+                this.carbs = this.carbs/4;
+                return Math.floor(this.carbs)
             },
             Fat(){
                 this.fat = Math.round(this.weight);

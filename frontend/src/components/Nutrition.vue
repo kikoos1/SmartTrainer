@@ -6,7 +6,7 @@
                     <v-spacer></v-spacer>
                     <v-btn color="green darken-1" flat @click.native="Close()" class = 'ws-close-modal-button'>X</v-btn>
                 </v-card-actions>
-                <v-card-title class="headline">Use Google's location service?</v-card-title>
+                <v-card-title class="headline">Nutrition facts</v-card-title>
                 <v-card-text>
                     <h1>Protein</h1>
                     <v-progress-linear v-model="protein"></v-progress-linear>
