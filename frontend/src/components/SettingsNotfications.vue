@@ -1,18 +1,18 @@
 <template>
     <div>
     <v-list three-line subheader>
-        <v-subheader>General</v-subheader>
+        <v-subheader>Генерални</v-subheader>
         <v-list-tile avatar>
             <v-list-tile-action>
                 <v-checkbox v-model = 'notifications' input-value="false" @change = 'ChangeNotif()'></v-checkbox>
             </v-list-tile-action>
             <v-list-tile-content>
-                <v-list-tile-title>Notifications</v-list-tile-title>
+                <v-list-tile-title>Известия</v-list-tile-title>
             </v-list-tile-content>
         </v-list-tile>
         <v-list-tile @click = 'mealnotif = true' v-if = 'notifications'>
             <v-list-tile-content >
-                <v-list-tile-title>Set when to send notifications for meals</v-list-tile-title>
+                <v-list-tile-title>Кога да се пускат известия за храненията</v-list-tile-title>
             </v-list-tile-content>
         </v-list-tile>
     </v-list>

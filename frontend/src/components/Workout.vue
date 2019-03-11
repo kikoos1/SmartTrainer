@@ -27,10 +27,10 @@
 
                     <v-card-title primary-title>
                     <div>
-                        <div class="headline">{{ exercise.name }}
+                        <div class="headline">{{ exercise.exercise.name }}
 
 
-                                    <v-btn icon @click="DeleteVolume(exercise)">
+                                    <v-btn icon @click="DeleteVolume(exercise.id)">
                                         <v-icon>delete</v-icon>
                                     </v-btn>
 
@@ -41,9 +41,9 @@
                     <v-slide-y-transition>
                         <v-card-text >
                            <v-list>
-                               <v-list-tile v-for = 'v in exercise.volume' :key = 'v.id'>
+                               <v-list-tile>
                                    <v-list-tile-title>
-                                       {{v.kg}}kg X {{v.reps}}
+                                       {{exercise.kg}}kg X {{exercise.reps}}X{{exercise.sets}} 
                                    </v-list-tile-title>
                                    <v-list-tile-action>
                                        <v-btn icon @click = 'EditVolume'><v-icon>edit</v-icon></v-btn>
@@ -61,7 +61,7 @@
             <br><br><br>
 
         </v-layout>
-        <modal :dialog="dialog"></modal>
+        <modal :dialog="dialog" :workout_id="this.id"></modal>
     </v-container>
 
 </template>
@@ -73,6 +73,7 @@
         components:{
             modal:AddExerciseModal
         },
+        props:['id'],
 
         data:()=>({
             exercises:[{id:1,name:'Леганка',volume:[{id:1,kg:75,reps:10}]},{id:2,name:'Набиранка',volume:[{id:2,kg:90,reps:3}]}],
@@ -81,16 +82,24 @@
 
         }),
         methods:{
+            FetchData(){
+                var app = this;
+                this.get('/workout/'+this.id).then(function(resp){
+                    app.exercises = resp.exercises;
+                })
+            },
             EditVolume(volume){
 
             },
-            DeleteVolume(exercise){
-                var id = this.exercises.indexOf(exercise);
-                this.exercises.splice(id,1)
+            DeleteVolume(id){
+                this.delete('/workout/'+id+'/delete').then(function(){
+                    location.reload();
+                })
             }
         },
         created(){
             var app = this;
+            this.FetchData();
             this.$eventBus.$on('workout',(resp)=>{
 
             })

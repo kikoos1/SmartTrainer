@@ -7,4 +7,7 @@ use Illuminate\Http\Request;
 class TrainingBlockController extends Controller
 {
     //
+    public function get(){
+        
+    }
 }

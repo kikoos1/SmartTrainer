@@ -28,7 +28,7 @@
           </v-list-tile-action>
           <v-list-tile-content >
             <v-list-tile-title>
-              Settings
+              Настройки
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
@@ -73,12 +73,12 @@
             isconfirm:false,
             items: [
                 { icon: 'home', text: 'Dashboard',to:'/dashboard' },
-                { icon: 'restaurant_menu', text: 'Daily intake',to:'/daily-intake' },
-                { icon: 'trending_up', text: 'Progress' ,to:'/kg-progress'},
-              { icon: 'fitness_center', text: 'Training',to:'/progress' },
-                { icon: 'people', text: 'Friends', to:'/friends' },
-                { icon: 'ballot', text: 'Blog',to:'/blog' },
-                { icon: 'grade', text: 'Achievments',to:'/achievements' },
+                { icon: 'restaurant_menu', text: 'Хранителен дневник',to:'/daily-intake' },
+                { icon: 'trending_up', text: 'Прогрес' ,to:'/kg-progress'},
+              { icon: 'fitness_center', text: 'Тренировки',to:'/progress' },
+                { icon: 'people', text: 'Приятели', to:'/friends' },
+                { icon: 'ballot', text: 'Блог',to:'/blog' },
+                { icon: 'grade', text: 'Постижения',to:'/achievements' },
                 //{ icon: 'settings', text: 'Settings',to:'settings' },
                 //{ icon: 'info', text: 'About' },
             ],
@@ -107,6 +107,7 @@
           },
             //Fetching the user
           fetchUser(){
+            this.isAuth();
             var app = this;
             this.get('/auth/user').then(function(resp){
               app.$store.commit('setUser',resp.data);
@@ -130,7 +131,7 @@
         //Created function
         created(){
           var app = this;
-          this.isAuth();
+         // this.isAuth();
           //Checking if the user is logged and fetch the user
           //app.isAuth();
             this.fetchUser();

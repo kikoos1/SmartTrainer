@@ -3,13 +3,13 @@
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Add weight</span>
+                    <span class="headline">Добави</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex>
-                                <v-text-field  type ='number 'label="Kg" v-model = 'kg.kg' step = 'any' required></v-text-field>
+                                <v-text-field  type ='number' label="Kg" v-model = 'kg.kg' step = 'any' required></v-text-field>
                             </v-flex>
                             <v-flex>
                                 <v-menu
@@ -27,7 +27,7 @@
                                     <v-text-field
                                             slot="activator"
                                             v-model="kg.date"
-                                            label="Date"
+                                            label="Дата"
                                             hint="MM/DD/YYYY format"
                                             persistent-hint
                                             prepend-icon="event"
@@ -44,8 +44,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="Close()">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click.native=" Save()">Save</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native="Close()">Затвори</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native=" Save()">Запази</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -58,6 +58,7 @@
         props:['dialog'],
         data:()=>({
             dateFormatted: null,
+            edit:false,
             kg:{
                 kg:0,
                 date:this.dateFormatted
@@ -70,9 +71,29 @@
                 this.$eventBus.$emit('close-modal')
             },
             Save(){
+                var app = this;
+                if(!this.edit) {
 
-                this.$eventBus.$emit('save',this.kg);
-                this.kg = []
+
+
+                    this.post('/kg/add', {
+                        kg: this.kg.kg,
+                        date: this.kg.date
+                    }).then(function () {
+                        app.kg = []
+                    })
+                    this.$eventBus.$emit('save', this.kg);
+                }else{
+
+                    this.patch('/kg/update', {
+                        id:this.kg.id,
+                        kg: this.kg.kg,
+                        date: this.kg.date
+                    }).then(function () {
+                        app.kg = []
+                    })
+                    this.$eventBus.$emit('save');
+                }
             },
             formatDate (date) {
                 if (!date) return null
@@ -100,6 +121,16 @@
                 this.dateFormatted = this.formatDate(this.date)
             }
         },
+        created() {
+            this.$eventBus.$on('edit',(resp)=>{
+                this.kg = {
+                    id:resp.id,
+                    kg:resp.kg,
+                    date:resp.created_at
+                }
+                this.edit = true;
+            })
+        }
 
     }
 </script>

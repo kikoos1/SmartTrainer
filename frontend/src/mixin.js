@@ -1,7 +1,7 @@
 import axios from 'axios'
+import qs from 'qs'
 
-  
-let mix = {
+    let mix = {
         methods: {
             ajaxCall(method, url, params = '') {
                 if (!url || !method) {
@@ -16,14 +16,33 @@ let mix = {
                         console.log('POST without body')
                         return 'POST without body'
                     } else {
-                        config["data"] = params
+                        config["data"] = qs.stringify(params);
+                        //config["headers"] = {'content-type': 'application/x-www-form-urlencoded'};
+
                     }
                 }
-                if ((method == 'GET')) {
-                    if (params) {
-                        config["params"] = params
+                    if ((method == 'PATCH')) {
+                        if (!params) {
+                            console.log('POST without body')
+                            return 'POST without body'
+                        } else {
+                            config["data"] = qs.stringify(params);
+                            //config["headers"] = {'content-type': 'application/x-www-form-urlencoded'};
+
+                        }
+
                     }
-                }
+                    if ((method == 'GET')) {
+                        if (params) {
+                            config["params"] = params
+                        }
+                    }
+                    if ((method == 'DELETE')) {
+                        if (params) {
+                            config["params"] = params
+                        }
+                    }
+
                 return axios(config)
                     .then((response) => {
                         try {
@@ -51,9 +70,16 @@ let mix = {
             post(url,params ){
                 return this.ajaxCall('POST', url, params )
             },
+            patch(url,params ){
+                return this.ajaxCall('PATCH', url, params )
+            },
+            delete(url) {
+                return this.ajaxCall('DELETE', url)
+            },
             redirect(url){
                 window.location.replace(url);
             },
+            
             push_notification(img_url = '', body) {
                 Notification.requestPermission( permission => {
                     let notification = new Notification(body, {

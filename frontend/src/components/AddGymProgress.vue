@@ -4,13 +4,13 @@
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Create new workout</span>
+                    <span class="headline">Добави нова тренировка</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex>
-                                <v-text-field label="Workout name" v-model = 'workout.name' required></v-text-field>
+                                <v-text-field label="Име" v-model = 'workout.name' required></v-text-field>
                             </v-flex>
                             <v-flex>
                                 <v-menu
@@ -28,7 +28,7 @@
                                     <v-text-field
                                             slot="activator"
                                             v-model="workout.date"
-                                            label="Date"
+                                            label="Дата"
                                             hint="MM/DD/YYYY format"
                                             persistent-hint
                                             prepend-icon="event"
@@ -45,8 +45,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="Close()">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click.native=" Save()">Save</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native="Close()">Затвори</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native=" Save()">Запази</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -71,14 +71,15 @@
                 this.$eventBus.$emit('close-modal')
             },
             Save(){
-               var newworkout = {
+                this.post('workouts/add',{
                     name:this.workout.name,
                     date:this.workout.date
+                }).then(function(){
+                    this.$eventBus.$emit('save');
+                    this.workout.name = null;
+                    this.workout.date = null ;
+                })
 
-                }
-                this.$eventBus.$emit('save',newworkout);
-                this.workout.name = null;
-                this.workout.date = null    ;
 
             },
             formatDate (date) {

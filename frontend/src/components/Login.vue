@@ -1,7 +1,7 @@
 <template>
     <div>
     <v-container >
-        <h1>Login</h1>
+        <h1>Вход</h1>
     <form @submit.prevent = 'Login'>
         <v-text-field
             type = 'email'
@@ -11,24 +11,24 @@
         ></v-text-field>
         <v-text-field
             type = 'password'
-            label = 'Password'
+            label = 'Парола'
             v-model = 'password'
             required
         ></v-text-field>
-        <v-btn type = 'submit'>Login</v-btn>
+        <v-btn type = 'submit'>Вход</v-btn>
     </form>
     </v-container>
     <v-container>
         <v-btn >
             <v-icon>fab fa-facebook</v-icon>
-            &nbsp;Sign in with Facebook
+            &nbsp;Вход с Facebook
         </v-btn>
         <v-btn >
             <v-icon>fab fa-google</v-icon>
-            &nbsp;Sign in with Google
+            &nbsp;Вход с  Google
         </v-btn>
         <br>
-        <a href="/register">Don't have an account</a>
+        <v-btn to="register">Нямаш профил</v-btn>
     </v-container>
     </div>
 </template>

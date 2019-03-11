@@ -6,7 +6,7 @@
     <v-icon>clear</v-icon>
     </v-btn>
             <v-card-text>
-                <v-subheader class="pa-0">Search food</v-subheader>
+                <v-subheader class="pa-0">Потърси храна</v-subheader>
                 <v-autocomplete
                         v-model="food"
                         :items="foods"
@@ -29,7 +29,7 @@
                                 <v-icon>add</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-title>
-                                Add this food
+                                Добави тази храна
                             </v-list-tile-title>
 
                         </v-list-tile>

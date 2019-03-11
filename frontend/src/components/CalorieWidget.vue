@@ -2,7 +2,7 @@
     <v-container grid-list-md text-xs-center>
         <v-layout row wrap>
             <v-flex xs12>
-        <h1>Calories</h1>
+        <h1>Калории</h1>
     <h3>{{calories+'/'+goals.calories}}</h3>
             </v-flex>
         <v-flex xs4>
@@ -13,7 +13,7 @@
             :value="protein"
             color="teal"
     >
-        <h5>Protein</h5>{{ protein+'/'+goals.protein }}
+        <h5>Протеин</h5>{{ protein+'/'+goals.protein }}
     </v-progress-circular>
         </v-flex>
         <v-flex xs4>
@@ -24,7 +24,7 @@
                 :value="fat"
                 color="red"
         >
-            <h5>Fat</h5>{{ fat+'/'+goals.fat }}
+            <h5>Мазнини</h5>{{ fat+'/'+goals.fat }}
         </v-progress-circular>
         </v-flex>
         <v-flex xs4>
@@ -35,7 +35,7 @@
                 :value="carbs"
                 color="primary"
         >
-            <h5>Carbs</h5>{{ carbs+'/'+goals.carbs }}
+            <h5>Въглехидрати</h5>{{ carbs+'/'+goals.carbs }}
         </v-progress-circular>
         </v-flex>
         </v-layout>

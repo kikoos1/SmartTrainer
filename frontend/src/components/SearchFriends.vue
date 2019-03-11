@@ -4,7 +4,7 @@
         <v-layout row pb-2>
             <v-flex xs8 offset-xs2>
                 <v-text-field
-                    label="Type Name"
+                    label="Въведи име"
                     v-model="search"
                     @keyup = 'Search()'
                 ></v-text-field>

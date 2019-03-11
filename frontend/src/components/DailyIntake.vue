@@ -22,7 +22,7 @@
                          grid-list-lg>
                 <v-card-title primary-title>
                     <div>
-                        <div class="headline">Breakfast</div>
+                        <div class="headline">Закуска</div>
                     </div>
                 </v-card-title>
 
@@ -43,12 +43,12 @@
                                 </v-list-tile-content>
 
                                 <v-list-tile-action>
-                                    <v-btn icon ripple>
+                                    <v-btn icon ripple @click = 'Update(item.id)'>
                                         <v-icon>edit</v-icon>
                                     </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                    <v-btn icon ripple @click = 'Delete(id,item.type)'>
+                                    <v-btn icon ripple @click = 'Delete(item.id)'>
                                         <v-icon>delete</v-icon>
                                     </v-btn>
                                 </v-list-tile-action>
@@ -66,7 +66,7 @@
                              grid-list-lg>
                     <v-card-title primary-title>
                         <div>
-                            <div class="headline">Lunch</div>
+                            <div class="headline">Обяд</div>
                         </div>
                     </v-card-title>
 
@@ -88,12 +88,12 @@
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
-                                        <v-btn icon ripple>
+                                        <v-btn icon ripple @click = "Update(item.id)">
                                             <v-icon>edit</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
                                     <v-list-tile-action>
-                                        <v-btn icon ripple @click = 'Delete(id,item.type)'>
+                                        <v-btn icon ripple @click = 'Delete(item.id)'>
                                             <v-icon>delete</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
@@ -111,7 +111,7 @@
                              grid-list-lg>
                     <v-card-title primary-title>
                         <div>
-                            <div class="headline">Dinner</div>
+                            <div class="headline">Вечеря</div>
                         </div>
                     </v-card-title>
 
@@ -132,12 +132,12 @@
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
-                                        <v-btn icon ripple>
+                                        <v-btn icon ripple @click = "Update(item.id)">
                                             <v-icon>edit</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
                                     <v-list-tile-action>
-                                        <v-btn icon ripple @click = 'Delete(id,item.type)'>
+                                        <v-btn icon ripple @click = 'Delete(item.id)'>
                                             <v-icon>delete</v-icon>
                                         </v-btn>
                                     </v-list-tile-action>
@@ -149,16 +149,10 @@
             </v-card>
         </v-flex><!---Dinner--->
         <br>
-        <v-btn flat @click = "dialog = true">
-            <v-icon>dashboard</v-icon>
-            Nutrition
-        </v-btn>
-        <nutrition :dialog = dialog ></nutrition>
     </div>
 </template>
 
 <script>
-    import Nutrition from './Nutrition'
     export default {
         name: "DailyIntake",
         data:()=>({
@@ -169,9 +163,7 @@
             dialog:false,
             intake:[]
         }),
-        components:{
-            Nutrition
-        },
+        
         methods:{
             fetchData(){
                 var app =this;
@@ -200,8 +192,20 @@
                     }
                 })
             },
-            Delete(index,type){
-
+            Delete(index){
+                var app = this;
+                
+                this.delete('daily-intake/meal/'+index+'/delete').then(function(){
+                    app.fetchData();
+                   location.reload();
+                })
+            },
+            Update(id){
+                var app = this;
+                this.$router.push('daily-intake/updateMeal/'+id);
+                
+                
+                
             }
         },
         created(){

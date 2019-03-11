@@ -9,7 +9,7 @@
                 </v-card-title>
 
                 <v-card-actions>
-                    <v-btn flat color="blue" to = '/daily-intake'>Learn More</v-btn>
+                    <v-btn flat color="blue" to = '/daily-intake'>Научи повече</v-btn>
                 </v-card-actions>
             </v-card>
         </v-flex>

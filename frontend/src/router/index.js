@@ -23,7 +23,7 @@ import Exercise from "../components/Exercise";
 Vue.use(Router)
 
 export default new Router({
-    mode:'history',
+    //mode:'history',
   routes: [
     {
       path: '/',
@@ -116,13 +116,25 @@ export default new Router({
           component:AddMeal,
           props:true
       },
+      {
+        path:'/daily-intake/updateMeal/:meal_id',
+        name:'AddMeal',
+        component:AddMeal,
+        props:true
+    },
 
       {
-          path:'/workout/',
+          path:'/workout/:id',
           name:'Workout',
           component:Workout,
-          //props:true
+          props:true
       },
+      {
+        path:'/workout/:id/addExercise/:exercise_id',
+        name:'Exercise',
+        component:Exercise,
+        props:true
+    },
       {
           path:'/exercises/add',
           name:'exercise',

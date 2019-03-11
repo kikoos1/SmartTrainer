@@ -29,9 +29,9 @@
                     </div>
                 </v-card-title>
                 <v-card-actions>
-                    <v-btn flat color="blue">View Profile</v-btn>
+                    <v-btn flat color="blue">Профил</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="purple"><v-icon>send</v-icon>Send Message</v-btn>
+                    <v-btn flat color="purple"><v-icon>send</v-icon>Съобщение</v-btn>
                 </v-card-actions>
             </v-card>
         </v-flex>

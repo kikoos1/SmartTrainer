@@ -14,24 +14,36 @@
         <Chart :chartdata = 'datacollection' :options="{responsive: true, maintainAspectRatio: false} "></Chart>
         <modal :dialog = 'show'></modal>
                 <section>
-                        <v-list v-for="item in kg" :key = 'item.id'>
+                        <v-list v-for="item in kg.slice().reverse()" :key = 'item.id'>
                                 <v-list-tile>
                                         <v-list-tile-content>
-                                                <v-list-tile-title>{{item.date}}</v-list-tile-title>
+                                                <v-list-tile-title>{{item.created_at }}</v-list-tile-title>
                                                 <v-list-tile-sub-title>{{ item.kg }}kg</v-list-tile-sub-title>
-
-
                                         </v-list-tile-content>
+                                        <v-list-tile-action>
+                                                <v-btn icon ripple @click = "Edit(item)">
+                                                        <v-icon>edit</v-icon>
+                                                </v-btn>
+                                        </v-list-tile-action>
+                                        <v-list-tile-action>
+                                                <v-btn icon ripple @click = 'Delete(item.id)'>
+                                                        <v-icon>delete</v-icon>
+                                                </v-btn>
+                                        </v-list-tile-action>
 
                                 </v-list-tile>
+
                                 <v-divider></v-divider>
+
                         </v-list>
+
+
                 </section>
         </div>
 </template>
 
 <script>
-        var moment = require('moment');
+        var moment = require('moment')
     import Chart from './Chart'
   import AddKgModal from './AddKgModal'
     export default {
@@ -44,11 +56,20 @@
         data:()=>({
             show:false,
             kg:[],
+
             datacollection:[],
             gradient: '',
             //kg:[{id:1,kg:85.6,date:'2018-07-27'},{id:1,kg:87.5,date:'2018-07-27'},{id:1,kg:87.9,date:'2018-07-27'},{id:1,kg:30,date:'2018-07-27'}]
         }),
         methods:{
+          FetchData(){
+                    var app = this;
+                    this.get('/kg/get').then(function(resp){
+                            app.kg = resp.kg;
+                            app.FillData();
+                    })
+
+                },
           FillData(){
               var app = this;
               var kilos = {
@@ -70,7 +91,7 @@
                   var newkg = parseFloat(app.kg[i].kg)
                   kgs.data.push(newkg);
 
-                  kilos.labels.push(app.kg[i].date);
+                  kilos.labels.push(moment(app.kg[i].created_at).format('MM/DD/YYYY'));
                   //console.log(i);
 
               }
@@ -95,7 +116,25 @@
           },
             getRandomInt () {
                 return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-            }
+            },
+                Edit(kg){
+                        var kgs = {
+                                id:kg.id,
+                                kg:kg.kg,
+                                date:kg.created_at
+                        }
+                        this.$eventBus.$emit('edit',kgs);
+                        this.show = true;
+                },
+                Delete(id){
+                  var app = this;
+
+                  this.delete('/kg/'+id+'/delete').then(function(){
+                          app.FetchData();
+                  });
+
+
+                }
         },
         computed:{
           data() {
@@ -104,6 +143,7 @@
         },
 
         mounted(){
+                this.FetchData();
             this.gradient = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, 450)
 
 
@@ -117,16 +157,14 @@
 
         },
         created(){
-            this.FillData();
+                this.FetchData();
+
+
             var app = this;
+
           this.$eventBus.$on('save',(kg)=>{
-              var newkg ={
-                  id:app.getRandomInt(),
-                  kg:Number(kg.kg),
-                  date:kg.date
-              }
-              app.kg.push(newkg);
-              this.FillData();
+
+                  app.FetchData();
               //console.log(app.kg);
               app.show = false;
 

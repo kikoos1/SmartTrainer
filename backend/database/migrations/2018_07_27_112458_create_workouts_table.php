@@ -17,6 +17,7 @@ class CreateWorkoutsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('exercise_id');
+            $table->integer('workout_id');
             $table->string('name');
             $table->timestamps();
         });

@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Set time for notifications</span>
+                    <span class="headline">Задай време за известия</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
@@ -21,7 +21,7 @@
                                     <v-text-field
                                             slot="activator"
                                             v-model="breakfast"
-                                            label="Breakfast"
+                                            label="Закуска"
                                             prepend-icon="access_time"
                                             required
                                     ></v-text-field>
@@ -49,7 +49,7 @@
                                     <v-text-field
                                             slot="activator"
                                             v-model="lunch"
-                                            label="Lunch"
+                                            label="Обяд"
                                             prepend-icon="access_time"
                                             required
                                     ></v-text-field>
@@ -78,7 +78,7 @@
                                     <v-text-field
                                             slot="activator"
                                             v-model="dinner"
-                                            label="Dinner"
+                                            label="Вечеря"
                                             prepend-icon="access_time"
                                             required
                                     ></v-text-field>

@@ -11,7 +11,7 @@
         <br>
         <v-icon x-large @click = "redirect('https://www.instagram.com/waikovixstudio/')">fab fa-instagram</v-icon>
         <br>
-        <h3 class="grey--text">Copyright 2018, Waikovix Studio,inc.All right reserved</h3>
+        <h3 class="grey--text">Copyright 2019, Waikovix Studio,inc.All right reserved</h3>
 
     </center>
 </template>

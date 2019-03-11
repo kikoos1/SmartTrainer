@@ -6,10 +6,10 @@
                     <v-icon>clear</v-icon>
                 </v-btn>
                 <v-card-text>
-                    <v-subheader class="pa-0">Search exercise</v-subheader>
+                    <v-subheader class="pa-0">Потърси упражнение</v-subheader>
                     <v-autocomplete
-                            v-model="food"
-                            :items="foods"
+                            v-model="exercise"
+                            :items="exercises"
                             :search-input.sync="search"
                             color="white"
                             hide-selected
@@ -29,7 +29,7 @@
                                     <v-icon>add</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-title>
-                                    Add this Exercise
+                                    Добави това упражнение
                                 </v-list-tile-title>
 
                             </v-list-tile>
@@ -44,27 +44,28 @@
 <script>
     export default {
         name: "AddExercise",
-        props:['dialog'],
+        props:['dialog','workout_id'],
         data:()=>({
-            food:'',
-            foods:[],
+            exercise:'',
+            exercises:[],
             search:null,
             resp:[]
         }),
         methods:{
             Redirect(route,event={emit:false,name:null,prop:null}){
                 var app = this;
-                this.$router.push(route)
+               
                 if(event.emit){
                     app.$eventBus.$emit(event.name,event.prop);
                 }
+                 this.$router.push(route)
             },
             FindValue(val){
                 var app = this;
                 this.resp.forEach(function(food){
-                    console.log(food.name)
+                    console.log(exercise.name)
                     console.log(app.food)
-                    if(food.name==app.food){
+                    if(exercisee.name==app.exercise){
                         return food.id;
                     }
                 })
@@ -72,10 +73,12 @@
             SearchForFood(name){
                 var app = this;
                 if(name != "" || name != null) {
-                    this.get('/food/search/' + name).then(function (resp) {
-                        app.foods.push(resp.foods[0].name);
+                    this.get('/exercise/search/' + ''+name+'').then(function (resp) {
+                        console.log(resp);
+                        app.exercises.push(resp.exercises[0].name);
                         //console.log(resp.foods[0].name);
-                        app.resp.push(resp.foods[0]);
+                        app.resp.push(resp.exercises);
+                        console.log(app.resp);
                     }).catch(function (err) {
                         console.log(err);
                     })
@@ -91,12 +94,29 @@
                 // console.log(val);
                 this.SearchForFood(val);
             },
-            food (val) {
+            exercise (val) {
                 var app = this;
                 // console.log(val);
-                var id = app.resp[0].id;
+                var id;
+                for(var i = 0;i<=this.resp.length;i++){
+                    if(this.resp[i][0].name == this.exercise){
+                       id = this.resp[i][0].id;
+                       break;
+                    }
+                }
+
+                // var id = this.resp.indexOf(this.exercise);
                 console.log(id);
-                app.Redirect('daily-intake/addMeal/'+id,{emit:true,name:'food',prop:app.resp})
+                
+                var props = {
+            
+                    workout_id:this.workout_id,
+                    id:id,
+                    name:val
+
+                }
+                console.log(this.resp[id]);
+                app.Redirect(this.workout_id+'/addExercise/'+id,{emit:true,name:'exercise',prop:props})
             }
         }
     }

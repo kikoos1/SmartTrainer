@@ -4,18 +4,18 @@
             <v-form ref="form" v-model="valid" lazy-validation>
             <v-stepper v-model="e1">
                 <v-stepper-header>
-                    <v-stepper-step :complete="e1 > 1" step="1"   :rules = "[()=>valid]" editable>Register</v-stepper-step>
+                    <v-stepper-step :complete="e1 > 1" step="1"   :rules = "[()=>valid]" editable>Регистрация</v-stepper-step>
 
                     <v-divider></v-divider>
 
-                    <v-stepper-step :complete="e1 > 2" step="2" :rules = "[()=>valid]" editable>Getting some information about you</v-stepper-step>
+                    <v-stepper-step :complete="e1 > 2" step="2" :rules = "[()=>valid]" editable>Малко информация относно теб</v-stepper-step>
 
                     <v-divider></v-divider>
 
-                    <v-stepper-step :complete="e1 > 3" step="3" :rules = "[()=>valid]" editable>Select your goal</v-stepper-step>
+                    <v-stepper-step :complete="e1 > 3" step="3" :rules = "[()=>valid]" editable>Избери си цел</v-stepper-step>
                     <v-divider></v-divider>
 
-                    <v-stepper-step step="4">Finish</v-stepper-step>
+                    <v-stepper-step step="4">Всичко е готово</v-stepper-step>
                 </v-stepper-header>
 
                 <v-stepper-items>
@@ -24,7 +24,7 @@
                            <v-text-field
                                    type = 'text'
                                    required
-                                   label = "Name"
+                                   label = "Име"
                                    :rules = 'nameRules'
                                    v-model = 'name'
 
@@ -39,7 +39,7 @@
                            <v-text-field
                                    type = 'password'
                                    required
-                                   label = "Password"
+                                   label = "Парола"
                                   :rules = 'passwordRules'
                                   v-model = 'password'
                            ></v-text-field>
@@ -59,7 +59,7 @@
                         <v-text-field
                                 type = 'number'
                                 step='any'
-                                label = "Enter your weight in kg"
+                                label = "Въведи колко тежиш в КГ"
                                 required
                                 v-model="weight"
                                 :rules = 'numberRules'
@@ -70,7 +70,7 @@
                         <v-text-field
                                 type = 'number'
                                 step='any'
-                                label = "Enter your height in cm"
+                                label = "Въведи колко си висок в сантиметри"
                                 required
                                 v-model="height"
                                  :rules = 'numberRules'
@@ -79,7 +79,7 @@
                             <v-text-field
                                     type = 'number'
                                     step='any'
-                                    label = "Enter your age"
+                                    label = "Въведи си възраста"
                                     required
                                     v-model="age"
                                      :rules = 'numberRules'
@@ -88,7 +88,7 @@
                             <v-select
                                     :items = 'activities'
                                     v-model="activity"
-                                    label = 'select your activity'
+                                    label = 'Колко си активен'
                                     single line
                                      :rules = 'selectRules'
                             >
@@ -112,7 +112,7 @@
                         v-model="goal"
                         :items="goals"
                         :rules="selectRules"
-                        label="Select goal"
+                        label="Избрери си цел"
                         required
                             ></v-select>
                        </v-container>
@@ -129,13 +129,13 @@
                     </v-stepper-content>
                     <v-stepper-content step="4">
                         <v-container>
-                           <p>Calories:{{Calories}}</p>
+                           <p>Калории:{{Calories}}</p>
                             <br>
-                            <p>Protein:{{Protein}}</p>
+                            <p>Протеин:{{Protein}}</p>
                             <br>
-                            <p>Fat:{{Fat}}</p>
+                            <p>Мазнини:{{Fat}}</p>
                             <br>
-                            <p>Carbs:{{Carbs}}</p>
+                            <p>Въглехидрати:{{Carbs}}</p>
                         </v-container>
 
 
@@ -143,7 +143,7 @@
                                 color="primary"
                                 @click="Register"
                         >
-                            Finish
+                            Готово
                         </v-btn>
 
                     </v-stepper-content>
@@ -171,20 +171,20 @@
             name:'',
 
             nameRules:[
-              v=>!!v||'Name is required'
+              v=>!!v||'Име е необходимо'
             ],
             emailRules:[
-                v=>!!v||'Email is required'
+                v=>!!v||'Email е необходим'
             ],
             passwordRules:[
-                v=>!!v||'Password is required'
+                v=>!!v||'Парола е необходима'
             ],
             selectRules:[
-                v=>!!v||' Please select an option',
+                v=>!!v||' Моля избери опция',
 
             ],
             numberRules:[
-                v=>!!v||'This Field is required'
+                v=>!!v||'Това поле е необходимо'
             ],
             fat:0,
             carbs:0,
@@ -192,16 +192,16 @@
             activity:0,
             age:0,
             goals:[
-                {text:"Lose 0.5 per week",value:-500},
-                {text:"Maintain current weight",value:1},
-                {text:"Gain 0.5 per week",value:500},
+                {text:"Сваляй по 0,5кг на седмица",value:-500},
+                {text:"Поддържай килограми",value:1},
+                {text:"Качвай по 0,5кг на седмица",value:500},
             ],
             activities:[
-                {text:'Sedentary (little to no exercise)',value:1.2},
-                {text:'Lightly Active (light exercise/sports 1-3 days/week) ',value:1.375},
-                {text:'Moderately Active (moderate exercise/sports 3-5 days/week) ',value:1.55},
-                {text:'Very Active (hard exercise/sports 6-7 days a week)',value:1.725},
-                {text:'Extremely Active (very heavy exercise/ physical job/ training twice a day) ',value:1.9},
+                {text:'Заседнал начин на живот (малко или никакви упражнения)',value:1.2},
+                {text:'Ниско активен (леки упражнения/спорт  1-3 дни/сецмица) ',value:1.375},
+                {text:'Средно Активен (Средни упражнения/спорт 3-5 дни/седмица) ',value:1.55},
+                {text:'Много Активен (Трудни упражнениея/спорт 6-7 дни/седмица)',value:1.725},
+                {text:'Екстремно активен (Много тежки упражнения/ Работа в склад/ Тренировки по 2 пъти на ден) ',value:1.9},
             ]
         }),
         methods:{

@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">User Profile</span>
+                    <span class="headline">Профил</span>
                     <br>
                     <center> <v-icon>account_circle</v-icon></center>
                 </v-card-title>
