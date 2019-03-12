@@ -20,7 +20,7 @@
 
                     <v-card-title primary-title >
                         <div class = " text-xs-center">
-                            <div class="headline">{{workout.name}}</div>
+                            <div class="headline">{{workout.name}} <v-btn icon flat @click = 'Delete(workout.id)'><v-icon>delete</v-icon></v-btn></div>
                             <span class="grey--text">Дата:{{workout.created_at}}</span>
                         </div>
                     </v-card-title>
@@ -53,6 +53,12 @@
               this.get('/workouts').then(function(resp){
                   app.workouts = resp.workouts;
               });
+          }, 
+          Delete(id){
+              var app=this;
+              this.delete('workout/'+id+'/delete').then(function(){
+                  app.FetchData();
+              })
           }
         },
         created(){
@@ -62,7 +68,8 @@
                 app.show = false;
             })
             this.$eventBus.$on('save',()=>{
-                app.fetchData();
+                app.FetchData();
+                app.show = false;
             })
         }
     }

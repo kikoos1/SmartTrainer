@@ -75,6 +75,7 @@
                 if(name != "" || name != null) {
                     this.get('/exercise/search/' + ''+name+'').then(function (resp) {
                         console.log(resp);
+                        app.exercises = [];
                         app.exercises.push(resp.exercises[0].name);
                         //console.log(resp.foods[0].name);
                         app.resp.push(resp.exercises);

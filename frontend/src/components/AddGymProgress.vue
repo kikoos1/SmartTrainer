@@ -71,13 +71,14 @@
                 this.$eventBus.$emit('close-modal')
             },
             Save(){
+                var app = this;
                 this.post('workouts/add',{
                     name:this.workout.name,
                     date:this.workout.date
                 }).then(function(){
-                    this.$eventBus.$emit('save');
-                    this.workout.name = null;
-                    this.workout.date = null ;
+                    app.$eventBus.$emit('save');
+                    app.workout.name = null;
+                    app.workout.date = null ;
                 })
 
 

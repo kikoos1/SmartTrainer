@@ -142,8 +142,10 @@
         //Logout events
       this.$eventBus.$on('logout',function(){
         app.logged = false;
+        //localStorage.setItem('token',' ');
         alert('Token expired please login');
         app.$router.push('/');
+        
         
       })
       window.addEventListener('beforeunload',function(){

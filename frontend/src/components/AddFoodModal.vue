@@ -73,8 +73,10 @@
                 var app = this;
                 if(name != "" || name != null) {
                     this.get('/food/search/' + name).then(function (resp) {
+                        app.foods=[];
                         app.foods.push(resp.foods[0].name);
                         //console.log(resp.foods[0].name);
+                        app.resp = [];
                         app.resp.push(resp.foods[0]);
                     }).catch(function (err) {
                         console.log(err);

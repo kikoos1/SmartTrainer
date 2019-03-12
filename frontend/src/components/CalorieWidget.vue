@@ -74,10 +74,10 @@
                 var app = this;
                 //console.log(foods);
                foods.forEach(function(food){
-                  app.protein += (food.food.protein/100)*food.amount;
-                  app.fat += (food.food.fat/100)*food.amount;
-                  app.carbs += (food.food.carbs/100)*food.amount;
-                  app.calories += (food.food.calories/100)*food.amount;
+                  app.protein += Math.round((food.food.protein/100)*food.amount);
+                  app.fat += Math.round((food.food.fat/100)*food.amount);
+                  app.carbs += Math.round((food.food.carbs/100)*food.amount);
+                  app.calories += Math.round((food.food.calories/100)*food.amount);
                });
             }
         },

@@ -16,6 +16,7 @@ import VueCharts from 'vue-chartjs'
 import Vuex from 'vuex'
 import moment from 'moment'
 
+var token = localStorage.getItem('token');
 Vue.use(Vuex)
 axios.defaults.baseURL = 'http:///89.253.142.114:8000/api'
 const store = new Vuex.Store({
@@ -40,10 +41,13 @@ const store = new Vuex.Store({
     }
   }
 })
-var token = localStorage.getItem('token');
-Vue.prototype.$store = store;
+  
 
-axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+ token};
+Vue.prototype.$store = store;
+if(localStorage.getItem('token') && localStorage.getItem('token') != ''){
+  axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+localStorage.getItem('token')};
+}
+//axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest'};
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //axios.defaults.headers.Authorization =   token;
 

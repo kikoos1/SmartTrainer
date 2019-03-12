@@ -50,8 +50,10 @@
                 }).then(function(resp){
                    // app.$store.commit('set',resp.token);
                     localStorage.setItem('token',resp.token);
-
-                      app.$eventBus.$emit('logged');
+                    setTimeout(function(){
+                         app.$eventBus.$emit('logged');
+                    },1000)
+                     
                 })
             }
         },

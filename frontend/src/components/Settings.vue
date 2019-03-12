@@ -69,7 +69,7 @@
                 this.$eventBus.$emit('close-modal');
             },
             Logout(){
-
+                this.$eventBus.$emit('logout');
             },
             Save(){
                 this.Close();
