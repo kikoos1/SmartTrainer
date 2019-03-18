@@ -40,6 +40,7 @@
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{ item.food.name}}</v-list-tile-title>
+                                    <v-list-tile-sub-title>{{item.food.amount}} гр</v-list-tile-sub-title>  
                                 </v-list-tile-content>
 
                                 <v-list-tile-action>
@@ -85,6 +86,7 @@
 
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{item.food.name}}</v-list-tile-title>
+                                        <v-list-tile-sub-title>{{item.food.amount}} гр</v-list-tile-sub-title>
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
@@ -129,6 +131,7 @@
 
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{ item.food.name }}</v-list-tile-title>
+                                        <v-list-tile-sub-title>{{item.food.amount}} гр</v-list-tile-sub-title> 
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>

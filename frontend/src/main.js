@@ -44,8 +44,8 @@ const store = new Vuex.Store({
   
 
 Vue.prototype.$store = store;
-if(localStorage.getItem('token') && localStorage.getItem('token') != ''){
-  axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+localStorage.getItem('token')};
+if(localStorage.getItem('token') && localStorage.getItem('access_token') != ''){
+  axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+localStorage.getItem('access_token')};
 }
 //axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest'};
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';

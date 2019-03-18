@@ -43,25 +43,39 @@
         methods:{
              
             Login(){
-                var app = this;
+              var app = this;
                 this.post('/auth/login',{
                     email:this.email,
                     password:this.password
                 }).then(function(resp){
                    // app.$store.commit('set',resp.token);
-                    localStorage.setItem('token',resp.token);
-                    setTimeout(function(){
-                         app.$eventBus.$emit('logged');
-                    },1000)
-                     
+                    localStorage.setItem('access_token',resp.token);
+                     app.$router.push('/dashboard')
                 })
+            
+        
+                     
+                // })
+                // this.$auth.login({
+                //     data: {
+                //         email: app.email,
+                //         password: app.password
+                //      },
+                //     success(resp){
+                //     console.log(resp.data.token)
+                //     //localStorage.setItem('token',resp.data.token)
+                   
+                //     app.$eventBus.$emit('logged');
+                //      this.$auth.token('access_token', response.data.access_token)
+                //     },
+                //      rememberMe: true,
+                //     redirect:'/dashboard',
+                //     fetchUser: true ,
+                // })
             }
         },
         created() {
-            var app = this;
-            this.get('/auth/user').then(function(resp){
-               app.$eventBus.$emit('logged');
-            })
+            
         }
     }
 </script>

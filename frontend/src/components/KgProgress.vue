@@ -17,7 +17,7 @@
                         <v-list v-for="item in kg.slice().reverse()" :key = 'item.id'>
                                 <v-list-tile>
                                         <v-list-tile-content>
-                                                <v-list-tile-title>{{item.created_at }}</v-list-tile-title>
+                                                <v-list-tile-title>{{item.created_at}}</v-list-tile-title>
                                                 <v-list-tile-sub-title>{{ item.kg }}kg</v-list-tile-sub-title>
                                         </v-list-tile-content>
                                         <v-list-tile-action>
@@ -67,8 +67,16 @@
                     this.get('/kg/get').then(function(resp){
                             app.kg = resp.kg;
                             app.FillData();
+                            app.FormatData();
                     })
 
+                },
+                FormatData(){
+                        var app = this;
+                        this.kg.forEach(function(kgs){
+                                console.log(kgs)
+                                kgs.created_at = moment(kgs.created_at).format('MM/DD/YYYY')
+                        })
                 },
           FillData(){
               var app = this;

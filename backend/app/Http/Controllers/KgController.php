@@ -11,7 +11,8 @@ class KgController extends Controller
 {
     //
     public function get(){
-        $kg = Kg::get();
+        $user_id = Auth::user()->id;
+        $kg = Kg::where('user_id',$user_id)->get();
         return response()->json([
             'kg'=>$kg
         ]);
