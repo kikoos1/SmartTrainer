@@ -10,7 +10,9 @@ import qs from 'qs'
                 }
                 let config = {"method": method,
                     "url": url,
-                    "maxRedirects": 2}
+                    "maxRedirects": 2,
+                }
+                config['hearders'] = "'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '"+localStorage.getItem('access_token')
                 if ((method == 'POST')) {
                     if (!params) {
                         console.log('POST without body')

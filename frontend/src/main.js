@@ -18,7 +18,7 @@ import moment from 'moment'
 
 var token = localStorage.getItem('token');
 Vue.use(Vuex)
-axios.defaults.baseURL = 'http:///89.253.142.114:8000/api'
+axios.defaults.baseURL = 'http:///localhost:8000/api'
 const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('token'),
@@ -44,9 +44,8 @@ const store = new Vuex.Store({
   
 
 Vue.prototype.$store = store;
-if(localStorage.getItem('token') && localStorage.getItem('access_token') != ''){
+
   axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+localStorage.getItem('access_token')};
-}
 //axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest'};
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //axios.defaults.headers.Authorization =   token;

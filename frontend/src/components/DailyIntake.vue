@@ -11,9 +11,37 @@
                 right
                 fab
                 @click = "show = true"
+                v-show = 'today'
         >
             <v-icon>add</v-icon>
         </v-btn>
+       
+              <v-container>
+          <div>
+            <div class="headline mb-0" ><v-btn icon><v-icon medium @click="Backwards">keyboard_arrow_left</v-icon></v-btn>
+           <v-btn flat class = "title" @click = "changedate = !chagedate">{{date}}
+               <v-flex>
+               <v-menu v-model = "changedate"
+               :close-on-content-click="true"
+             :nudge-right="40"
+            lazy
+          transition="scale-transition"
+          offset-y
+          full-width
+          > 
+             <v-date-picker  v-model="date" reactive = "true"></v-date-picker>
+             </v-menu>
+             
+               </v-flex>
+           </v-btn>
+            <v-btn icon><v-icon medium @click = "Forward">keyboard_arrow_right</v-icon></v-btn>
+            
+            </div>
+          </div>
+     </v-container>
+        
+        
+       
         <add-food-modal :dialog ='show' ></add-food-modal>
         <calorie-widget></calorie-widget>
 <v-flex>
@@ -40,7 +68,7 @@
 
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{ item.food.name}}</v-list-tile-title>
-                                    <v-list-tile-sub-title>{{item.food.amount}} гр</v-list-tile-sub-title>  
+                                    <v-list-tile-sub-title>{{item.amount}} гр</v-list-tile-sub-title>  
                                 </v-list-tile-content>
 
                                 <v-list-tile-action>
@@ -86,7 +114,7 @@
 
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{item.food.name}}</v-list-tile-title>
-                                        <v-list-tile-sub-title>{{item.food.amount}} гр</v-list-tile-sub-title>
+                                        <v-list-tile-sub-title>{{item.amount}} гр</v-list-tile-sub-title>
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
@@ -131,7 +159,7 @@
 
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{ item.food.name }}</v-list-tile-title>
-                                        <v-list-tile-sub-title>{{item.food.amount}} гр</v-list-tile-sub-title> 
+                                        <v-list-tile-sub-title>{{item.amount}} гр</v-list-tile-sub-title> 
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
@@ -156,6 +184,7 @@
 </template>
 
 <script>
+var moment = require('moment');
     export default {
         name: "DailyIntake",
         data:()=>({
@@ -164,13 +193,20 @@
             dinner:[],
             lunch:[],
             dialog:false,
-            intake:[]
+            intake:[],
+            changedate:false,
+            today:true,
+            date:moment().format("YYYY-MM-DD")
         }),
         
         methods:{
-            fetchData(){
+            fetchData(date=''){
                 var app =this;
-                this.get('/daily-intake').then(function(resp){
+                if(date==''){
+                     date = moment().format("YYYY-MM-DD");
+                }
+               
+                this.get('/daily-intake/'+date).then(function(resp){
                     console.log(resp)
                     app.intake = resp;
                     app.Daily_Intake(resp.meals);
@@ -206,9 +242,12 @@
             Update(id){
                 var app = this;
                 this.$router.push('daily-intake/updateMeal/'+id);
-                
-                
-                
+            },
+            Backwards(){
+                this.date = moment(this.date).subtract(1,'day').format("YYYY-MM-DD");
+            },
+            Forward(){
+                this.date = moment(this.date).add(1,'day').format("YYYY-MM-DD");
             }
         },
         created(){
@@ -221,6 +260,22 @@
             this.$eventBus.$on('close-modal',function(){
                 app.dialog = false;
             })
+        },
+        watch:{
+            date(val){
+                if(val != moment().format("YYYY-MM-DD")){
+                    this.today = false
+                }else{
+                    this.today = true
+                }
+                this.foods = [];
+                this.intake = [];
+                this.breakfast = [];
+                this.lunch = [];
+                this.diner = [];
+                this.fetchData(val);
+                this.$eventBus.$emit('fetchData',val);
+            }
         }
     }
 </script>

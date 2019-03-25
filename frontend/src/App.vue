@@ -72,7 +72,7 @@
             dark:false,
             isconfirm:false,
             items: [
-                { icon: 'home', text: 'Dashboard',to:'/dashboard' },
+                { icon: 'home', text: 'Начало',to:'/dashboard' },
                 { icon: 'restaurant_menu', text: 'Хранителен дневник',to:'/daily-intake' },
                 { icon: 'trending_up', text: 'Прогрес' ,to:'/kg-progress'},
               { icon: 'fitness_center', text: 'Тренировки',to:'/progress' },
@@ -97,6 +97,10 @@
             app.get('/auth/user').then(function(){
               app.logged = true;
               //app.$router.push('/dashboard');
+              if(!app.logged){
+                app.$eventBus.$emit('logged');
+              }
+             
 
             }).catch(function(resp){
               app.$eventBus.$emit('logout')
@@ -142,8 +146,8 @@
         //Logout events
       this.$eventBus.$on('logout',function(){
         app.logged = false;
-        //localStorage.setItem('token',' ');
-        alert('Token expired please login');
+        localStorage.setItem('access_token',' ');
+        alert('Logged out');
         app.$router.push('/');
         
         

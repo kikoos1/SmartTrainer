@@ -12,10 +12,10 @@ class MealController extends Controller
 {
     //function to fetch the meals of the user
 
-    public function get()
+    public function get($date)
     {
         $user = Auth::user();
-        $meals = Meal::with('food')->where('user_id', $user->id)->where('created_at', '>=', Carbon::today())->get();
+        $meals = Meal::with('food')->where('user_id', $user->id)->where('created_at', '=', Carbon::parse($date))->get();
         return response()->json([
             'meals' => $meals
 
@@ -35,6 +35,7 @@ class MealController extends Controller
             $meal->food_id = $request->id;
             $meal->amount = $request->amount;
             $meal->type = $request->type;
+            $meal->created_at = $request->date;
             $meal->save();
 
         }

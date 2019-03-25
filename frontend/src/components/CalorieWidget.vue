@@ -10,7 +10,7 @@
             :rotate="360"
             :size="120"
             :width="15"
-            :value="protein"
+            :value="protein/goals.protein"
             color="teal"
     >
         <h5>Протеин</h5>{{ protein+'/'+goals.protein }}
@@ -21,7 +21,7 @@
                 :rotate="360"
                 :size="120"
                 :width="15"
-                :value="fat"
+                :value="fat/goals.fat"
                 color="red"
         >
             <h5>Мазнини</h5>{{ fat+'/'+goals.fat }}
@@ -32,7 +32,7 @@
                 :rotate="360"
                 :size="120"
                 :width="15"
-                :value="carbs"
+                :value="carbs/goals.carbs"
                 color="primary"
         >
             <h5>Въглехидрати</h5>{{ carbs+'/'+goals.carbs }}
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+    var moment = require('moment');
     export default {
         name: "CalorieWidget",
         data: () => ({
@@ -62,10 +63,13 @@
 
         }),
         methods: {
-            fetchData() {
+            fetchData(date='') {
                 var app = this;
-                this.get('/daily-intake').then(function (resp) {
-                    console.log("Widget: " + resp);
+                if(date ==''){
+                    date=moment().format('YYYY-MM-DD');
+                }
+                this.get('/daily-intake/'+date).then(function (resp) {
+                    //console.log("Widget: " + resp);
                     app.intake = resp;
                     app.filterDataandSum(resp.meals);
                 })
@@ -84,8 +88,12 @@
             created() {
                 var app = this;
 
-                this.$eventBus.$on('fetchData', () => {
-                    app.fetchData();
+                this.$eventBus.$on('fetchData', (date) => {
+                    app.protein = 0;
+                    app.fat = 0;
+                    app.carbs = 0;
+                    app.calories = 0;
+                    app.fetchData(date);
                 });
                 setTimeout(function () {
                     app.user = app.$store.getters.getUser;

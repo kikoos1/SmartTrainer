@@ -86,6 +86,7 @@
 </template>
 
 <script>
+    var moment = require('moment');
     export default {
         name: "AddMeal",
         props:['id','meal_id'],
@@ -113,6 +114,7 @@
         }),
         methods:{
           Send(){
+              var date = moment().format("YYYY-MM-DD");
               var app = this;
               if(this.addfood){
                   this.post('/food/add',{
@@ -121,7 +123,7 @@
                       protein:app.food.protein,
                       fat:app.food.fat,
                       carbs:app.food.carbs,
-                      calories:app.food.calories
+                      calories:app.food.calories,
                   }).then(function(){
                       app.$router.push('/daily-intake');
                   })
@@ -140,7 +142,8 @@
                   this.post('/daily-intake/addMeal',{
                       id:app.food.id,
                       amount:app.amount,
-                      type:app.type
+                      type:app.type,
+                      date:date
                   }).then(function(){
                       app.$router.push('/daily-intake');
                   })

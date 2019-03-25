@@ -22,7 +22,7 @@ Route::get('auth/register/code/{code}', 'AuthController@confirmCode');
 Route::group(['middleware' => 'jwt.auth','cors'], function(){
     Route::get('auth/user', 'AuthController@user');
     //Daily intake
-    Route::get('/daily-intake','MealController@get');
+    Route::get('/daily-intake/{date}','MealController@get');
     Route::get('/daily-intake/meal/{id}','MealController@getMeal');
     Route::post('/daily-intake/addMeal','MealController@store');
     Route::patch('/daily-intake/updateMeal','MealController@patch');

@@ -70,6 +70,7 @@
             },
             Logout(){
                 this.$eventBus.$emit('logout');
+                this.Close();
             },
             Save(){
                 this.Close();
