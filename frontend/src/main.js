@@ -15,27 +15,32 @@ import MealNotifications from './components/MealNotifications'
 import VueCharts from 'vue-chartjs'
 import Vuex from 'vuex'
 import moment from 'moment'
+import VueAxios from 'vue-axios';
 
-var token = localStorage.getItem('token');
+
+
+Vue.mixin(mix);// mixin
+
+//Axios
+Vue.use(VueAxios, axios);
+axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded',
+'X-Requested-With': 'XMLHttpRequest',
+'Authorization':'Bearer '+localStorage.access_token}
+axios.defaults.baseURL = 'http://localhost:8000/api'
+
+//Vue Store
 Vue.use(Vuex)
-axios.defaults.baseURL = 'http:///localhost:8000/api'
+
 const store = new Vuex.Store({
   state: {
-    token: localStorage.getItem('token'),
     user:[]
   },
   mutations: {
-    set(state,newtoken){
-      state.token = newtoken
-    },
     setUser(state,newuser){
       state.user = newuser
     }
   },
   getters:{
-    get: state => {
-      return state.token;
-    },
     getUser: state => {
       return state.user;
     }
@@ -44,22 +49,18 @@ const store = new Vuex.Store({
   
 
 Vue.prototype.$store = store;
+//Event Bus
+Vue.prototype.$eventBus = new Vue();
 
-  axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '+localStorage.getItem('access_token')};
-//axios.defaults.headers= {'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest'};
-//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-//axios.defaults.headers.Authorization =   token;
-
-
+ //Vue components
 Vue.use(VueCharts);
-Vue.use(moment);
 Vue.component('meal-notifications',MealNotifications);
 Vue.component('settings',Settings);
-Vue.mixin(mix);
+
 Vue.component('add-gym-progress-widget',AddGymProgress);
 Vue.component('calorie-widget',CalorieWidget);
 Vue.component('add-food-modal',AddFoodModal);
-Vue.prototype.$eventBus = new Vue();
+
 Vue.use(Vuetify);
 
 

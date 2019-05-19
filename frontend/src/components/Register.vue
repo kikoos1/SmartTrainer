@@ -94,6 +94,15 @@
                             >
 
                             </v-select>
+                                <v-select
+                                    :items = 'genders'
+                                    v-model="gender"
+                                    label = 'Пол'
+                                    single line
+                                     :rules = 'selectRules'
+                            >
+
+                            </v-select>
 
                         <v-btn
                                 color="primary"
@@ -165,7 +174,7 @@
             weight:0,
             e1:0,
             goal:0,
-
+            gender:'',
             calories:0,
             protein:0,
             name:'',
@@ -202,6 +211,10 @@
                 {text:'Средно Активен (Средни упражнения/спорт 3-5 дни/седмица) ',value:1.55},
                 {text:'Много Активен (Трудни упражнениея/спорт 6-7 дни/седмица)',value:1.725},
                 {text:'Екстремно активен (Много тежки упражнения/ Работа в склад/ Тренировки по 2 пъти на ден) ',value:1.9},
+            ],
+            genders:[
+                {text:"Мъж",value:"male"},
+                {text:"Жена",value:"female"}
             ]
         }),
         methods:{
@@ -215,7 +228,13 @@
                        calories:app.calories,
                        protein:app.protein,
                        carbs:app.carbs,
-                       fat:app.fat
+                       height:app.height,
+                       weight:app.weight,
+                       target:app.goal,
+                       activity:app.activity,
+                       age:app.age,
+                       fat:app.fat,
+                       gender:app.gender
                    }).then(function(){
                         app.$router.push('/');
                    })

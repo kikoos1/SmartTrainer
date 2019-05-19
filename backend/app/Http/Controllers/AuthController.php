@@ -30,6 +30,12 @@ class AuthController extends Controller
         $user->carbs = $request->carbs;
         $user->fat = $request->fat;
         $user->code = $confirmCode;
+        $user->weight=$request->weight;
+        $user->height=$request->height;
+        $user->target=$request->target;
+        $user->activity = $request->activity;
+        $user->gender = $request->gender;
+        $user->age = $request->age;
         $this->sendMail($confirmCode,$request->email);
         $user->save();
         
@@ -71,5 +77,20 @@ class AuthController extends Controller
         $user->isconfirm = 1;
         $user->save();
         return view('complete');
+    }
+    public function Update(Request $request){
+        $user = User::find(Auth::user()->id);
+        $user->name = $request->name;
+        $user->weight = $request->weight;
+        $user->height = $request->height;
+        $user->age = $request->age;
+        $user->calories = $request->calories;
+        $user->protein = $request->protein;
+        $user->carbs = $request->carbs;
+        $user->fat = $request->fat;
+        $user->img_url = $request->img_url;
+        $user->target = $request->target;
+        $user->activity = $request->activity;
+        $user->save();
     }
 }

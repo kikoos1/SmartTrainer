@@ -2,11 +2,10 @@
         <div>
                 <v-btn
                         fixed
-                        dark
+                        :dark="dark"
                         fab
                         bottom
                         right
-                        color="pink"
                         @click = 'show = !show'
                 >
                         <v-icon>add</v-icon>
@@ -56,6 +55,7 @@
         data:()=>({
             show:false,
             kg:[],
+            dark:localStorage.getItem("dark-theme"),
 
             datacollection:[],
             gradient: '',

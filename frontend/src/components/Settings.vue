@@ -2,9 +2,9 @@
     <v-layout row justify-center>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
 
-            <v-card>
-                <v-toolbar dark color="primary">
-                    <v-btn icon dark @click.native="Close()">
+            <v-card dark>
+                <v-toolbar dark>
+                    <v-btn icon  @click.native="Close()">
                         <v-icon>close</v-icon>
                     </v-btn>
                     <v-toolbar-title>Настройки</v-toolbar-title>

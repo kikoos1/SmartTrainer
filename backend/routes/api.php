@@ -20,7 +20,9 @@ Route::group(['middleware' => 'cors'], function(){
 Route::get('auth/register/code/{code}', 'AuthController@confirmCode');
 
 Route::group(['middleware' => 'jwt.auth','cors'], function(){
+    //User
     Route::get('auth/user', 'AuthController@user');
+    Route::patch('auth/user', 'AuthController@update');
     //Daily intake
     Route::get('/daily-intake/{date}','MealController@get');
     Route::get('/daily-intake/meal/{id}','MealController@getMeal');
@@ -31,6 +33,9 @@ Route::group(['middleware' => 'jwt.auth','cors'], function(){
     Route::post('/food/add','FoodController@store');
     Route::get('/food/search/{search}','FoodController@search');
     Route::get('/food/{id}','FoodController@get');
+    Route::get('/foods/get','FoodController@fetch');
+    Route::patch('/food/{id}/update','FoodController@patch');
+    Route::delete('/food/{id}/delete','FoodController@delete');
     //KG progress
     Route::post('/kg/add','KgController@store');
     Route::get('/kg/get','KgController@get');
@@ -46,6 +51,13 @@ Route::group(['middleware' => 'jwt.auth','cors'], function(){
     Route::get('/exercise/search/{search}','ExerciseController@find');
     Route::get('/exercise/{id}','ExerciseController@get');
     Route::post('exercise/add','ExerciseController@store');
+    //Friends
+    Route::get('/friends','FriendController@get');
+    Route::get('/friends/search/{search}','FriendController@search');
+    Route::get('/friends/requests','FriendController@requests');
+    Route::post('/friends/requests/send','FriendController@store');
+    Route::patch('/friends/requests/accept/','FriendController@patch');
+    Route::delete('/friends/requests/decline/{id}','FriendController@delete');
 });
 
 Route::group(['middleware' => 'jwt.refresh'], function(){

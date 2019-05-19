@@ -23,6 +23,13 @@ class CreateUsersTable extends Migration
             $table->integer('carbs');
             $table->integer('fat');
             $table->string('code');
+            $table->string('img_url')->default('https://www.marketingmuses.com/wp-content/uploads/2018/01/invis-user.png');
+            $table->integer('weight');
+            $table->integer('height');
+            $table->integer('target');
+            $table->integer('age');
+            $table->double('activity');
+            $table->string("gender");
             $table->boolean('isconfirm')->default('0');
             $table->rememberToken();
             $table->timestamps();

@@ -12,7 +12,9 @@ import qs from 'qs'
                     "url": url,
                     "maxRedirects": 2,
                 }
-                config['hearders'] = "'Content-Type':'application/x-www-form-urlencoded','X-Requested-With': 'XMLHttpRequest','Authorization':'Bearer '"+localStorage.getItem('access_token')
+                config['headers'] = {'Content-Type':'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Authorization':'Bearer '+localStorage.access_token}
                 if ((method == 'POST')) {
                     if (!params) {
                         console.log('POST without body')
@@ -94,6 +96,34 @@ import qs from 'qs'
                         window.open(window.location.href);
                     };
                 });
+            },
+            Calculate_Calories(weight,height,age,activity,goal){
+                var calories_and_macros = {
+                    calories:0,
+                    protein:0,
+                    carbs:0,
+                    fat:0
+                };
+                console.log(height);
+                console.log(weight);
+                console.log(age);
+                
+                var  bmr = ((height*6.25)+(weight*9.99)-(age*4.92)+5);
+                
+                
+                var calories = (bmr*activity)+goal
+               
+                
+                var protein =  Math.round(weight*2);
+                var fat = Math.round(weight);
+                var carbs = (calories-((protein*4)+(fat*9)));;
+                
+                console.log(calories);
+                calories_and_macros.calories = Math.round(calories);
+                calories_and_macros.protein = protein;
+                calories_and_macros.fat =fat;
+                calories_and_macros.carbs = Math.round(carbs/4);
+                return calories_and_macros;
             }
 
         }

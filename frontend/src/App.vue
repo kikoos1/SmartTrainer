@@ -12,7 +12,7 @@
             v-show = 'logged'
     >
       <v-list dense v-show = 'logged'>
-        <v-list-tile v-for="item in items" :key="item.text" @click="" :to = 'item.to'>
+        <v-list-tile v-for="item in items" :key="item.text" @click="" :to = 'item.to' round>
           <v-list-tile-action >
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -35,9 +35,9 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
-            color="blue lighten-1"
+            
             clipped-left
-            dark
+            :dark = dark
             app
             fixed
     >
@@ -46,6 +46,70 @@
       <v-toolbar-title class="mr-5 align-center">
         <span class="title">Smart Trainer</span>
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+
+
+
+
+
+
+<v-menu :nudge-width="100" >
+        <template v-slot:activator="{ on }">
+          <v-toolbar-title v-on="on">
+           <v-badge left color = "red">
+      <template v-slot:badge >
+        <span>{{notifications.lenght}}</span>
+      </template>
+      <v-btn icon  v-show="logged">
+        <v-icon
+          large
+        >
+         notifications
+        </v-icon>
+      </v-btn>
+    </v-badge>
+          </v-toolbar-title>
+        </template>
+
+        <v-list>
+          <v-list-tile
+            v-for="notification in notifications"
+            :key="notification.id"
+            @click=""
+          >
+            <v-list-tile-content>{{notification.text}}</v-list-tile-content>
+            <v-list-tile-action v-if="notification.type == 'friends'">
+            <v-btn icon flat color = "green" @click = 'Accept(notification.id)'> 
+              <v-icon >
+                done
+              </v-icon>
+            </v-btn>
+          </v-list-tile-action>
+          <v-list-tile-action v-if="notification.type == 'friends'">
+            <v-btn icon flat color = "red" @click = 'Decline(notification.id)'> 
+              <v-icon >
+                delete
+              </v-icon>
+            </v-btn>
+          </v-list-tile-action>
+          </v-list-tile>
+
+
+          <v-list-tile v-if='notifications.lenght != 0'>
+            <v-list-tile-content>
+             
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn  flat @click = 'notifications = []'>
+                 Изчисти всички
+                <v-icon>clear</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+          
+        </v-list>
+      </v-menu>
+      
     </v-toolbar>
     <v-content>
       <v-alert v-show="isconfirm"
@@ -64,6 +128,7 @@
 </template>
 
 <script>
+import Pusher from 'pusher-js'
     export default {
         data: () => ({
             drawer: false,
@@ -71,6 +136,7 @@
             logged:false,
             dark:false,
             isconfirm:false,
+            notifications:[],
             items: [
                 { icon: 'home', text: 'Начало',to:'/dashboard' },
                 { icon: 'restaurant_menu', text: 'Хранителен дневник',to:'/daily-intake' },
@@ -88,11 +154,53 @@
         },
         //Methods
         methods:{
+          //Notifications
+           FilterNotif(id){
+             var app = this;
+            this.notifications.forEach(notif=>{
+              if(notif.id == id){
+                 var idd=app.notifications.indexOf(notif);
+                 app.notifications.splice(idd,1);
+
+              }
+            })
+          },
+          Accept(id){
+            this.patch('/friends/requests/accept',{
+              id:id
+            })
+            this.FilterNotif(id);
+          },
+          Decline(id){
+            this.delete('/friends/requests/decline/'+id);
+            this.FilterNotif(id);
+          },
+          getRequests(){
+            var app = this;
+            this.notifications = [];
+             this.get('/friends/requests').then(function(resp){
+              if(resp.requests !=[]){
+                resp.requests.forEach(element => {
+                  var notification = {
+                  id:element.id,
+                  text:element.user.name+" ви изпрати покана",
+                  type:"friends"
+                }
+                app.notifications.unshift(notification);
+                });
+                
+               
+              }
+              
+            });
+          },
+         
             //Checking auth
           isAuth(){
             var app = this;
 
             //app.$eventBus.$emit('timer-start');
+            if(localStorage.access_token){
             var x = setInterval(function(){
             app.get('/auth/user').then(function(){
               app.logged = true;
@@ -108,6 +216,19 @@
              clearInterval(x);
             })
             },5000)
+          }
+          },
+          //Puhser
+          subscribe(){
+          var user = this.$store.getters.getUser;
+          var app = this;
+        console.log(user.id);
+     let pusher = new Pusher('971da6d621cb4b98ebfe', { cluster: 'eu' })
+      pusher.subscribe('user-'+user.id)
+      pusher.bind("App\\Events\\FriendRequest", data => {
+        app.push_notification('',data.text);
+       app.getRequests();
+      })
           },
             //Fetching the user
           fetchUser(){
@@ -118,7 +239,9 @@
               if(!resp.data.isconfirm){
                 app.isconfirm = true
               }
+              app.subscribe();
             })
+           this.getRequests();
           },
             //Changing theme
           SetDark(dark_theme = ''){
@@ -138,29 +261,30 @@
          // this.isAuth();
           //Checking if the user is logged and fetch the user
           //app.isAuth();
+          if(!localStorage.access_token){
+        localStorage.setItem('access_token','');
+      }
             this.fetchUser();
           this.$eventBus.$on('logged',function(){
               app.isAuth();
             app.$router.push('/dashboard');
+            //PUSHER
+            app.subscribe()
         })
         //Logout events
       this.$eventBus.$on('logout',function(){
+        localStorage.removeItem('access_token') 
         app.logged = false;
-        localStorage.setItem('access_token',' ');
-        alert('Logged out');
+        
         app.$router.push('/');
         
+      })
+      
         
-      })
-      window.addEventListener('beforeunload',function(){
-          //localStorage.setItem('token',app.$store.getters.get);
-      })
             //Theme
             this.SetDark();
             this.$eventBus.$on('change-theme',function (resp) {
                 app.SetDark(resp);
-                console.log(resp);
-
             }),
 
           //Settings

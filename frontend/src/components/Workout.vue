@@ -5,9 +5,8 @@
                  grid-list-lg>
 <v-container class = 'text-lg-center'>
     <v-btn
-            color="purple"
             fab
-            dark
+            :dark="dark"
             fixed
             bottom
             right
@@ -78,7 +77,8 @@
         data:()=>({
             exercises:[{id:1,name:'Леганка',volume:[{id:1,kg:75,reps:10}]},{id:2,name:'Набиранка',volume:[{id:2,kg:90,reps:3}]}],
             show:false,
-            dialog:false
+            dialog:false,
+            dark:localStorage.getItem("dark-theme")
 
         }),
         methods:{

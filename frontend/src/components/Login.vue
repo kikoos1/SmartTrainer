@@ -1,6 +1,14 @@
 <template>
     <div>
     <v-container >
+         <v-alert
+      :value="hasError"
+      color="error"
+      icon="clear"
+      outline
+    >
+      {{error}}.
+    </v-alert>
         <h1>Вход</h1>
     <form @submit.prevent = 'Login'>
         <v-text-field
@@ -38,12 +46,14 @@
         name: "Login",
         data:()=>({
             email:'',
-            password:''
+            password:'',
+            hasError:false,
+            error:""
         }),
         methods:{
              
             Login(){
-              var app = this;
+             var app = this;
                 this.post('/auth/login',{
                     email:this.email,
                     password:this.password
@@ -51,27 +61,31 @@
                    // app.$store.commit('set',resp.token);
                     localStorage.setItem('access_token',resp.token);
                      app.$router.push('/dashboard')
+                }).catch(function(error){
+                    console.log(error);
+                    app.hasError = true;
+                    app.error = error.response.data.msg;
                 })
             
         
                      
-                // })
-                // this.$auth.login({
-                //     data: {
-                //         email: app.email,
-                //         password: app.password
-                //      },
-                //     success(resp){
-                //     console.log(resp.data.token)
-                //     //localStorage.setItem('token',resp.data.token)
+            
+            //  this.$auth.login({
+            //         data: {
+            //             email: app.email,
+            //             password: app.password
+            //          },
+            //         success(resp){
+            //         console.log(resp.data.token)
+            //         //localStorage.setItem('token',resp.data.token)
                    
-                //     app.$eventBus.$emit('logged');
-                //      this.$auth.token('access_token', response.data.access_token)
-                //     },
-                //      rememberMe: true,
-                //     redirect:'/dashboard',
-                //     fetchUser: true ,
-                // })
+            //         app.$eventBus.$emit('logged');
+            //          this.$auth.token('access_token', response.data.access_token)
+            //         },
+            //          rememberMe: true,
+            //         redirect:'/dashboard',
+            //         fetchUser: true ,
+            //     })
             }
         },
         created() {

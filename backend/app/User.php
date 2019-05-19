@@ -26,4 +26,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    public function friends()
+	{
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+        // if you want to rely on accepted field, then add this:
+            ->withPivot('is_friends')
+        ->wherePivot('is_friends', '=', 1);
+	}
 }

@@ -11,6 +11,18 @@
                     <v-container grid-list-md>
                         <v-layout  wrap>
                             <v-flex xs12>
+                                <v-select
+                                        :items = 'activities'
+                                        v-model="activity"
+                                        label = 'Твоята активност'
+                                        single line
+                                        :rules = 'selectRules'
+                                        :disabled = '!edit'
+                                >
+                                </v-select>
+                            </v-flex>
+
+                            <v-flex xs12>
                                 <v-text-field label="Calories" v-model=" calories_and_macros.calories" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 >
@@ -40,7 +52,38 @@
         name: "CalorieAndNutrition",
         props:['dialog'],
         data:()=>({
+            goal:0,
+            activity:0,
+            goals:[
+                {text:"Сваляй по 0,5кг на седмица",value:-500},
+                {text:"Поддържай килограми",value:1},
+                {text:"Качвай по 0,5кг на седмица",value:500},
+            ],
+            activities:[
+                {text:'Заседнал начин на живот (малко или никакви упражнения)',value:1.2},
+                {text:'Ниско активен (леки упражнения/спорт  1-3 дни/сецмица) ',value:1.375},
+                {text:'Средно Активен (Средни упражнения/спорт 3-5 дни/седмица) ',value:1.55},
+                {text:'Много Активен (Трудни упражнениея/спорт 6-7 дни/седмица)',value:1.725},
+                {text:'Екстремно активен (Много тежки упражнения/ Работа в склад/ Тренировки по 2 пъти на ден) ',value:1.9},
+            ],
+            nameRules:[
+                v=>!!v||'Име е необходимо'
+            ],
+            emailRules:[
+                v=>!!v||'Email е необходим'
+            ],
+            passwordRules:[
+                v=>!!v||'Парола е необходима'
+            ],
+            selectRules:[
+                v=>!!v||' Моля избери опция',
+
+            ],
+            numberRules:[
+                v=>!!v||'Това поле е необходимо'
+            ],
             calories_and_macros:{
+
                 calories:0,
                 protein:0,
                 fat:0,
@@ -53,7 +96,23 @@
             },
             Save(){
                 this.Close();
+            },
+            FormatData(response){
+
+               this.goal = response.target;
+
+               this.activity = response.activity;
+
+
             }
+
+        },
+        created(){
+           // console.log(this.$store.getter.getUser);
+            var app = this;
+            this.get('auth/user').then(function(resp){
+                app.FormatData(resp.data);
+            })
         }
     }
 </script>

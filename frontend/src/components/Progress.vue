@@ -1,8 +1,8 @@
 <template>
     <div>
     <v-btn
-            color="green"
-            dark
+            
+            :dark="dark"
             fixed
             bottom
             right
@@ -45,7 +45,8 @@
         name: "Progress",
         data:()=>({
             show:false,
-            workouts:[]
+            workouts:[],
+            dark:localStorage.getItem("dark-theme")
         }),
         methods:{
           FetchData(){

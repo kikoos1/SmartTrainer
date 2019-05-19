@@ -1,8 +1,7 @@
 <template>
     <v-container grid-list-sm fluid align-content-center>
         <v-btn
-                color="blue"
-                dark
+                :dark="dark"
                 fixed
                 bottom
                 right
@@ -12,26 +11,51 @@
             <v-icon>add</v-icon>
 
         </v-btn>
-        <SearchFriends v-show = 'show'></SearchFriends>
+       <v-card flat v-show = 'show'>
+            <v-card-title>Потърси приятели</v-card-title>
+        <v-layout row pb-2>
+            <v-flex xs8 offset-xs2>
+                <v-text-field
+                    label="Въведи име"
+                    v-model="search"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
+    </v-card>
         <br>
     <v-layout row wrap>
-        <v-flex d-flex xs12 sm6 md4 v-if="searchresults.length == 0">
-            <v-card>
+        <v-flex d-flex xs12 sm6 md4>
+            <v-card v-for="friend in friends" :key="friend.id">
                 <v-card-media
-                        src="https://scontent-sof1-1.xx.fbcdn.net/v/t1.0-9/35761517_1026576604163337_5866743370046504960_n.jpg?_nc_cat=0&oh=b24f20d3f84ac2f5db741adbdf299999&oe=5C0EF9F2"
+                        :src="friend.img_url"
                         height="350px"
                 >
                 </v-card-media>
                 <v-card-title primary-title>
                     <div>
-                        <div class="headline">Zlatin Stefaonv</div>
+                        <div class="headline">{{friend.name}}</div>
                         <span class="grey--text">1,000 miles of wonder</span>
                     </div>
                 </v-card-title>
-                <v-card-actions>
+                <v-card-actions v-if="friend.is_friends" >
                     <v-btn flat color="blue">Профил</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn flat color="purple"><v-icon>send</v-icon>Съобщение</v-btn>
+                </v-card-actions>
+                 <v-card-actions v-else >
+                    <v-btn flat color="blue" @click='Add_As_Friend(friend.id)' v-if = "send">
+                        <v-icon>add</v-icon>
+                        Добави като приятел
+                        </v-btn>
+
+                    <v-btn flat color="blue" v-else-if="send">
+                        <v-icon>add</v-icon>
+                        Поканата е изпратена
+                        </v-btn>
+                         <v-btn flat color="purple" @click="" >
+                        <v-icon>send</v-icon>
+                        Съобщение
+                        </v-btn>
                 </v-card-actions>
             </v-card>
         </v-flex>
@@ -40,17 +64,43 @@
 </template>
 
 <script>
-    import SearchFriends from './SearchFriends'
     export default {
         name: "Friends",
-        components:{
-            SearchFriends
-        },
         data:()=>({
             show:false,
             friends:[],
-            searchresults:[]
-        })
+            search:'',
+            send:false,
+            dark:localStorage.getItem("dark-theme")
+            
+        }),
+        methods:{
+            Search(){
+                var app = this;
+                this.get('/friends/search/'+this.search).then(function(resp){
+                    app.friends = resp.users;
+                })
+            },
+            Add_As_Friend(id){
+                var app = this;
+                this.post('/friends/requests/send',{
+                    user_id:id
+                }).then(function(){
+                    app.send = true;
+                })
+            }
+        },
+        created(){
+            var app = this;
+            this.get('/friends').then(function(resp){
+                app.friends = resp.friends;
+            })
+        },
+        watch:{
+            search(val){
+                this.Search();
+            }
+        }
     }
 </script>
 

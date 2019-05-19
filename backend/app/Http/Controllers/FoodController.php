@@ -10,7 +10,7 @@ class FoodController extends Controller
 {
     //function to get foods
     public function search($search){
-        $food = Food::where('name', 'LIKE', '%'.$search.'%')->get();;
+        $food = Food::where('name', 'LIKE', '%'.$search.'%')->get();
         return response()->json([
             "foods"=>$food
         ]);
@@ -32,5 +32,11 @@ class FoodController extends Controller
         $food->carbs = $request->carbs;
         $food->fat = $request->fat;
         $food->save();
+    }
+    public function fetch(){
+        $foods = Food::Paginate()->latest()->get();
+        return response()->json([
+            "foods"=>$foods
+        ]);
     }
 }

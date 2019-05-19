@@ -4,16 +4,15 @@
             id="e3"
     >
         <v-btn
-                color="blue"
-                dark
                 fixed
+                :dark = "dark"
                 bottom
                 right
                 fab
                 @click = "show = true"
                 v-show = 'today'
         >
-            <v-icon>add</v-icon>
+            <v-icon >add</v-icon>
         </v-btn>
        
               <v-container>
@@ -192,6 +191,7 @@ var moment = require('moment');
             breakfast:[],
             dinner:[],
             lunch:[],
+            dark:localStorage.getItem('dark-theme'),
             dialog:false,
             intake:[],
             changedate:false,
